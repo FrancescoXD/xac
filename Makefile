@@ -12,3 +12,6 @@ all:
 
 clean:
 	rm $(EXEC_NAME) $(OBJ_FILES)
+
+simple:
+	$(CC) $(CFLAGS) -o $(EXEC_NAME) src/simple_win.c $(OBJ_FILES) $(LIBS)

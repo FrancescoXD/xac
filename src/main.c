@@ -1,5 +1,6 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
+#include <X11/keysym.h>
 #include <X11/Xutil.h>
 
 #include <stdio.h>
@@ -7,51 +8,35 @@
 #include <unistd.h>
 
 int main(void) {
-    // open the connection
-    Display *dpy = XOpenDisplay(NULL);
-    int blackColor = XBlackPixel(dpy, DefaultScreen(dpy)); // get black color
-    int whiteColor = XWhitePixel(dpy, DefaultScreen(dpy)); // get white color
+    Display *dpy = XOpenDisplay(0);
+    Window root = DefaultRootWindow(dpy);
 
-    // create a window
-    Window w = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, 200, 100, 0, blackColor, whiteColor);
+    XGrabPointer(dpy, root, False, ButtonReleaseMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
+    int state;
+    XGetInputFocus(dpy, &root, &state);
 
-    // get input from root
-    Window root = XDefaultRootWindow(dpy);
-    unsigned int modifiers = ControlMask | ShiftMask;
-    int keycode = XKeysymToKeycode(dpy, XK_F6);
-    Bool owner_events = False;
-    int pointer_mode = GrabModeAsync;
-    int keyboard_mode = GrabModeAsync;
-    XGrabKey(dpy, keycode, modifiers, root, owner_events, pointer_mode, keyboard_mode);
-    XGrabKey(dpy, 72, modifiers, root, owner_events, pointer_mode, keyboard_mode);
+    XSelectInput(dpy, root, KeyPressMask | ButtonReleaseMask);
+    XGrabKey(dpy, XKeysymToKeycode(dpy, XK_F6), AnyModifier, root, True, GrabModeAsync, GrabModeAsync);
 
-    //XSelectInput(dpy, w, StructureNotifyMask);
-    XSelectInput(dpy, w, ExposureMask | ButtonPressMask | KeyPressMask);
-
-    XMapWindow(dpy, w);
-    GC gc = XCreateGC(dpy, w, 0, NULL);
-    XSetForeground(dpy, gc, whiteColor);
-    XSetBackground(dpy, gc, blackColor);
-
-    XDrawPoint(dpy, w, gc, 5, 5);
-    XDrawLine(dpy, w, gc, 10, 10, 400, 400);
-    XFlush(dpy);
-
-    XEvent e;
+    XEvent ev;
+    Bool start = False;
     for (;;) {
-        XNextEvent(dpy, &e);
-        switch (e.type) {
-            case Expose: {
-                puts("ciao");
-                break;
-            }
-            case ButtonPress: {
-                puts("cliccato");
-                break;
-            }
+        XNextEvent(dpy, &ev);
+        switch (ev.type) {
             case KeyPress: {
-                puts("f6");
-                XUngrabKey(dpy, keycode, modifiers, root);
+                if (XLookupKeysym(&ev.xkey, 0) == XK_F6) {
+                    if (!start) {
+                        start = True;
+                        puts("started");
+                    } else {
+                        start = False;
+                        puts("stopped");
+                    }
+                }
+                break;
+            }
+            case ButtonRelease: {
+                puts("mouse clicked");
                 break;
             }
         }
