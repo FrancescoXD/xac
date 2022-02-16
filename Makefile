@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Werror -Wextra
+CFLAGS=-Wall -Werror -Wextra -pedantic
 EXEC_NAME=app
 FILES=src/ac.c
 OBJ_FILES=
@@ -13,5 +13,3 @@ all:
 clean:
 	rm $(EXEC_NAME) $(OBJ_FILES)
 
-simple:
-	$(CC) $(CFLAGS) -o $(EXEC_NAME) src/simple_win.c $(OBJ_FILES) $(LIBS)
