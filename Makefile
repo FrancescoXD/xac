@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -Werror -Wextra
 EXEC_NAME=app
-FILES=src/main.c
+FILES=src/ac.c
 OBJ_FILES=
 LIBS=-lX11 -lXtst
 
