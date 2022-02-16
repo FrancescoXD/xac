@@ -3,7 +3,7 @@ CFLAGS=-Wall -Werror -Wextra
 EXEC_NAME=app
 FILES=src/main.c
 OBJ_FILES=
-LIBS=-lX11 -lxdo
+LIBS=-lX11 -lXtst
 
 .PHONY: all clean
 
