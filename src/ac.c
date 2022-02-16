@@ -8,18 +8,14 @@
 #include <string.h>
 
 void autoclick(Display *d) {
-	puts("running...");
+	puts("2 seconds sleep...");
 	sleep(2);
-	puts("stop sleep");
 	for (int i = 0; i < 50; ++i) {
-		printf("%d", i);
-		fflush(stdout);
         	XTestFakeButtonEvent(d, Button1, True, CurrentTime);
         	XFlush(d);
        		XTestFakeButtonEvent(d, Button1, False, CurrentTime);
         	XFlush(d);
 	}
-	puts("after");
 }
 
 int main(void) {
