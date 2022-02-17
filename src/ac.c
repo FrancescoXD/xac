@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 
-void autoclick(Display *display, int delay)
+void autoclick(Display *display, unsigned long delay)
 {
 	for (int i = 3; i >= 1; --i)
 	{
@@ -26,7 +26,7 @@ void autoclick(Display *display, int delay)
 		XFlush(display);
 		XTestFakeButtonEvent(display, Button1, False, CurrentTime);
 		XFlush(display);
-		sleep(delay);
+		usleep(delay);
 	}
 }
 
@@ -34,24 +34,33 @@ void printHelp(char *app)
 {
 	printf("=== help page ===\n");
 	puts("CTRL + F6 - starts the autoclicker.");
-	printf("%s -d 1 - ", app);
+	printf("%s -s 1 - ", app);
 	puts("clicks every 1 second. This is the default value.");
+	printf("%s -m 100 - ", app);
+	puts("clicks every 100 milliseconds.");
 	puts("\nexample usage:");
-	printf("%s -d 0.5\n", app);
+	printf("%s -s 5\n", app);
 }
 
-void parseOpt(int argc, char *argv[], int *delay)
+void parseOpt(int argc, char *argv[], unsigned long *delay)
 {
 	int opt;
-	while ((opt = getopt(argc, argv, "hd:")) != -1)
+	while ((opt = getopt(argc, argv, "hs:m:")) != -1)
 	{
 		switch (opt)
 		{
-		case 'd':
+		case 's':
 		{
 			*delay = atoi(optarg);
-			printf("[info] delay was set to %ds\n", *delay);
-			puts("[info] start the autoclicker with CTRL + F6");
+			printf("[info] delay was set to %lus\n", *delay);
+			*delay *= 1000000; // seconds
+			break;
+		}
+		case 'm':
+		{
+			*delay = atoi(optarg);
+			printf("[info] delay was set to %lums\n", *delay);
+			*delay *= 1000; // milliseconds
 			break;
 		}
 		case 'h':
@@ -76,8 +85,9 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	puts("[info] autoclicker app started");
-	int delay = 1;
+	unsigned long delay = 1000000; // 1 second
 	parseOpt(argc, argv, &delay);
+	puts("[info] start the autoclicker with CTRL + F6");
 
 	Display *dp = XOpenDisplay(NULL);
 	unsigned int event_mask = KeyPressMask;
