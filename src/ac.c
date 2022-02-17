@@ -81,12 +81,12 @@ int main(int argc, char *argv[])
 {
 	if (optind >= argc)
 	{
-		fprintf(stderr, "[error] no argument passed, %s -h to see the help page.\n", argv[0]);
+		fprintf(stderr, "[error] no argument passed!\n%s -h to see the help page.\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	puts("[info] autoclicker app started");
 	unsigned long delay = 1000000; // 1 second
 	parseOpt(argc, argv, &delay);
+	puts("[info] autoclicker app started");
 	puts("[info] start the autoclicker with CTRL + F6");
 
 	Display *dp = XOpenDisplay(NULL);
