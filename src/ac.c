@@ -35,7 +35,7 @@ void printHelp(char *app)
 	printf("=== help page ===\n");
 	puts("CTRL + F6 - starts the autoclicker.");
 	printf("%s -s 1 - ", app);
-	puts("clicks every 1 second. This is the default value.");
+	puts("clicks every 1 second.");
 	printf("%s -m 100 - ", app);
 	puts("clicks every 100 milliseconds.");
 	puts("\nexample usage:");
