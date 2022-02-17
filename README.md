@@ -2,7 +2,8 @@
 A very basic autoclicker written in C with libx11.
 
 ## Requirements
-- libx11
+- libx11-dev
+- libxtst-dev
 - make
 
 ## Building and running

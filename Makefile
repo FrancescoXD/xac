@@ -2,13 +2,12 @@ CC=gcc
 CFLAGS=-Wall -Werror -Wextra -pedantic
 EXEC_NAME=xac
 FILES=src/ac.c
-OBJ_FILES=
 LIBS=-lX11 -lXtst
 
 .PHONY: all clean
 
 all:
-	$(CC) $(CFLAGS) -o $(EXEC_NAME) $(FILES) $(OBJ_FILES) $(LIBS)
+	$(CC) $(CFLAGS) -o $(EXEC_NAME) $(FILES) $(LIBS)
 
 install:
 	$(CC) $(CFLAGS) -o /usr/bin/$(EXEC_NAME) $(FILES) $(LIBS)
