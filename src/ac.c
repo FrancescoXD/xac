@@ -97,7 +97,6 @@ int main(int argc, char *argv[])
 			{
 				if (XLookupKeysym(&ev.xkey, 0) == XK_F6 && ev.xkey.state & ControlMask)
 				{
-					puts("cliccato");
 					autoclick(dp, delay);
 				}
 				break;
