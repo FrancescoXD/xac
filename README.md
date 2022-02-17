@@ -6,6 +6,12 @@ A very basic autoclicker written in C with libx11.
 - libxtst-dev
 - make
 
+## Clone the repo
+```
+$ git clone https://github.com/FrancescoXD/Xlib.git
+$ cd Xlib
+```
+
 ## Building and running
 ```
 $ make
