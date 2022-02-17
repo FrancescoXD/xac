@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Werror -Wextra -pedantic
-EXEC_NAME=app
+EXEC_NAME=xac
 FILES=src/ac.c
 OBJ_FILES=
 LIBS=-lX11 -lXtst
@@ -9,6 +9,12 @@ LIBS=-lX11 -lXtst
 
 all:
 	$(CC) $(CFLAGS) -o $(EXEC_NAME) $(FILES) $(OBJ_FILES) $(LIBS)
+
+install:
+	$(CC) $(CFLAGS) -o /usr/bin/$(EXEC_NAME) $(FILES) $(LIBS)
+
+uninstall:
+	rm /usr/bin/$(EXEC_NAME)
 
 clean:
 	rm $(EXEC_NAME) $(OBJ_FILES)
