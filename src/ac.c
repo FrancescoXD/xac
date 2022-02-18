@@ -45,16 +45,19 @@ void* autoclick(void *args)
 	return NULL;
 }
 
-void printHelp(char *app)
+void printHelp()
 {
 	printf("=== help page ===\n");
+	puts("Hot Keys:");
 	puts("CTRL + F6 - starts/stops the autoclicker.");
-	printf("%s -s 1 - ", app);
+	puts("CTRL + q - closes the autoclicker.");
+	puts("\nArguments:");
+	printf("xac -s 1 - ");
 	puts("clicks every 1 second.");
-	printf("%s -m 100 - ", app);
+	printf("xac -m 100 - ");
 	puts("clicks every 100 milliseconds.");
 	puts("\nexample usage:");
-	printf("%s -s 5\n", app);
+	printf("xac -s 5\n");
 }
 
 void parseOpt(int argc, char *argv[], unsigned long *delay)
@@ -105,6 +108,7 @@ int main(int argc, char *argv[])
 	parseOpt(argc, argv, &delay);
 	puts("[info] autoclicker app started");
 	puts("[info] start/stop the autoclicker with CTRL + F6");
+	puts("[info] quit the autoclicker with CTRL + q");
 
 	Display *dp = XOpenDisplay(NULL);
 	unsigned int event_mask = KeyPressMask;
@@ -121,6 +125,7 @@ int main(int argc, char *argv[])
 	};
 
 	XGrabKey(dp, XKeysymToKeycode(dp, XK_F6), ControlMask, DefaultRootWindow(dp), True, GrabModeAsync, GrabModeAsync);
+	XGrabKey(dp, XKeysymToKeycode(dp, XK_Q), ControlMask, DefaultRootWindow(dp), True, GrabModeAsync, GrabModeAsync);
 	XSelectInput(dp, DefaultRootWindow(dp), event_mask);
 
 	XEvent ev;
@@ -142,6 +147,10 @@ int main(int argc, char *argv[])
 						pthread_create(&tid, &attr, autoclick, (void *)&go);
 					}
 				}
+				if (XLookupKeysym(&ev.xkey, 0) == XK_q && ev.xkey.state & ControlMask) {
+					puts("[info] autoclicker app stopped");
+					exit(EXIT_SUCCESS);
+				} 
 				break;
 			}
 			}
