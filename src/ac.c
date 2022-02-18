@@ -2,13 +2,24 @@
 #include <X11/Xutil.h>
 #include <X11/extensions/XTest.h>
 
+#include <pthread.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 
-void autoclick(Display *display, unsigned long delay)
+typedef struct {
+	Display *display;
+	unsigned long delay;
+	volatile Bool start;
+} generic_options;
+
+void* autoclick(void *args)
 {
+	Display *display = ((generic_options *)args)->display;
+	unsigned long delay = ((generic_options *)args)->delay;
+
 	for (int i = 3; i >= 1; --i)
 	{
 		printf("\r[info] start clicking in... %ds", i);
@@ -20,7 +31,7 @@ void autoclick(Display *display, unsigned long delay)
 		}
 	}
 
-	while (True)
+	while (True && ((generic_options *)args)->start)
 	{
 		XTestFakeButtonEvent(display, Button1, True, CurrentTime);
 		XFlush(display);
@@ -28,12 +39,16 @@ void autoclick(Display *display, unsigned long delay)
 		XFlush(display);
 		usleep(delay);
 	}
+
+	puts("[info] autoclicker has stopped.");
+
+	return NULL;
 }
 
 void printHelp(char *app)
 {
 	printf("=== help page ===\n");
-	puts("CTRL + F6 - starts the autoclicker.");
+	puts("CTRL + F6 - starts/stops the autoclicker.");
 	printf("%s -s 1 - ", app);
 	puts("clicks every 1 second.");
 	printf("%s -m 100 - ", app);
@@ -87,10 +102,16 @@ int main(int argc, char *argv[])
 	unsigned long delay = 1000000; // 1 second
 	parseOpt(argc, argv, &delay);
 	puts("[info] autoclicker app started");
-	puts("[info] start the autoclicker with CTRL + F6");
+	puts("[info] start/stop the autoclicker with CTRL + F6");
 
 	Display *dp = XOpenDisplay(NULL);
 	unsigned int event_mask = KeyPressMask;
+	pthread_t tid;
+	generic_options go = {
+		.delay = delay,
+		.display = dp,
+		.start = False,
+	};
 
 	XGrabKey(dp, XKeysymToKeycode(dp, XK_F6), ControlMask, DefaultRootWindow(dp), True, GrabModeAsync, GrabModeAsync);
 	XSelectInput(dp, DefaultRootWindow(dp), event_mask);
@@ -107,7 +128,12 @@ int main(int argc, char *argv[])
 			{
 				if (XLookupKeysym(&ev.xkey, 0) == XK_F6 && ev.xkey.state & ControlMask)
 				{
-					autoclick(dp, delay);
+					if (go.start) {
+						go.start = False;
+					} else {
+						go.start = True;
+						pthread_create(&tid, NULL, autoclick, (void *)&go);
+					}
 				}
 				break;
 			}

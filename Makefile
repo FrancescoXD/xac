@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-Wall -Werror -Wextra -pedantic
 EXEC_NAME=xac
 FILES=src/ac.c
-LIBS=-lX11 -lXtst
+LIBS=-lX11 -lXtst -lpthread
 
 .PHONY: all clean
 
