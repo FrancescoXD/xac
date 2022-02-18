@@ -45,7 +45,7 @@ void* autoclick(void *args)
 	return NULL;
 }
 
-void printHelp()
+void printHelp(void)
 {
 	printf("=== help page ===\n");
 	puts("Hot Keys:");
@@ -83,12 +83,12 @@ void parseOpt(int argc, char *argv[], unsigned long *delay)
 		}
 		case 'h':
 		{
-			printHelp(argv[0]);
+			printHelp();
 			exit(EXIT_FAILURE);
 		}
 		default:
 		{
-			printHelp(argv[0]);
+			printHelp();
 			exit(EXIT_FAILURE);
 		}
 		}
