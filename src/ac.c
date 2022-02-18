@@ -12,7 +12,7 @@
 typedef struct {
 	Display *display;
 	unsigned long delay;
-	volatile Bool start;
+	Bool start;
 } generic_options;
 
 void* autoclick(void *args)
@@ -94,6 +94,8 @@ void parseOpt(int argc, char *argv[], unsigned long *delay)
 
 int main(int argc, char *argv[])
 {
+	XInitThreads();
+
 	if (optind >= argc)
 	{
 		fprintf(stderr, "[error] no argument passed!\n%s -h to see the help page.\n", argv[0]);
@@ -106,7 +108,12 @@ int main(int argc, char *argv[])
 
 	Display *dp = XOpenDisplay(NULL);
 	unsigned int event_mask = KeyPressMask;
+	
+	/* Setup thread */
 	pthread_t tid;
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 	generic_options go = {
 		.delay = delay,
 		.display = dp,
@@ -132,7 +139,7 @@ int main(int argc, char *argv[])
 						go.start = False;
 					} else {
 						go.start = True;
-						pthread_create(&tid, NULL, autoclick, (void *)&go);
+						pthread_create(&tid, &attr, autoclick, (void *)&go);
 					}
 				}
 				break;
