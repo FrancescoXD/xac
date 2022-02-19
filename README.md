@@ -8,7 +8,7 @@ A very basic autoclicker written in C with libx11.
 
 ## Clone the repo
 ```
-$ git clone https://github.com/FrancescoXD/Xlib.git
+$ git clone https://github.com/FrancescoXD/xac.git
 $ cd Xlib
 ```
 

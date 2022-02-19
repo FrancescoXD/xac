@@ -4,7 +4,7 @@ EXEC_NAME=xac
 FILES=src/ac.c
 LIBS=-lX11 -lXtst -lpthread
 
-.PHONY: all clean
+.PHONY: all install uninstall clean
 
 all:
 	$(CC) $(CFLAGS) -o $(EXEC_NAME) $(FILES) $(LIBS)
