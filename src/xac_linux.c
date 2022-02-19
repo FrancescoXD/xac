@@ -1,19 +1,4 @@
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/extensions/XTest.h>
-
-#include <pthread.h>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-
-typedef struct {
-	Display *display;
-	unsigned long delay;
-	Bool start;
-} generic_options;
+#include "../include/xac_linux.h"
 
 void* autoclick(void *args)
 {
@@ -45,57 +30,7 @@ void* autoclick(void *args)
 	return NULL;
 }
 
-void printHelp(void)
-{
-	printf("=== help page ===\n");
-	puts("Hot Keys:");
-	puts("CTRL + F6 - starts/stops the autoclicker.");
-	puts("CTRL + q - closes the autoclicker.");
-	puts("\nArguments:");
-	printf("xac -s 1 - ");
-	puts("clicks every 1 second.");
-	printf("xac -m 100 - ");
-	puts("clicks every 100 milliseconds.");
-	puts("\nexample usage:");
-	printf("xac -s 5\n");
-}
-
-void parseOpt(int argc, char *argv[], unsigned long *delay)
-{
-	int opt;
-	while ((opt = getopt(argc, argv, "hs:m:")) != -1)
-	{
-		switch (opt)
-		{
-		case 's':
-		{
-			*delay = atoi(optarg);
-			printf("[info] delay was set to %lus\n", *delay);
-			*delay *= 1000000; // seconds
-			break;
-		}
-		case 'm':
-		{
-			*delay = atoi(optarg);
-			printf("[info] delay was set to %lums\n", *delay);
-			*delay *= 1000; // milliseconds
-			break;
-		}
-		case 'h':
-		{
-			printHelp();
-			exit(EXIT_FAILURE);
-		}
-		default:
-		{
-			printHelp();
-			exit(EXIT_FAILURE);
-		}
-		}
-	}
-}
-
-int main(int argc, char *argv[])
+int main_l(int argc, char *argv[])
 {
 	XInitThreads();
 
