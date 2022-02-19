@@ -9,6 +9,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+typedef struct {
+	unsigned long delay;
+	int start;
+	INPUT *input;
+} win_generic_options;
+
 int main_w(int argc, char *argv[]);
 
 #endif
