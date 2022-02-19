@@ -20,5 +20,6 @@ typedef struct {
 void* autoclick(void *args);
 void printHelp(void);
 void parseOpt(int argc, char *argv[], unsigned long *delay);
+int main_l(int argc, char *argv[]);
 
 #endif

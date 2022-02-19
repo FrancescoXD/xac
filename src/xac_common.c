@@ -50,4 +50,3 @@ void parseOpt(int argc, char *argv[], unsigned long *delay)
 		}
 	}
 }
-

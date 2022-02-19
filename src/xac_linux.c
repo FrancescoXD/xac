@@ -1,4 +1,5 @@
 #include "../include/xac_linux.h"
+#include "../include/xac_common.h"
 
 void* autoclick(void *args)
 {
