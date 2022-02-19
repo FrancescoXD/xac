@@ -1,13 +1,9 @@
 #ifdef _WIN32
 #include "../include/xac_win.h"
-#define WINDOWS 1
-#define LINUX 0
 #endif
 
 #ifdef linux
 #include "../include/xac_linux.h"
-#define LINUX 1
-#define WINDOWS 0
 #endif
 
 int main(int argc, char *argv[]) {

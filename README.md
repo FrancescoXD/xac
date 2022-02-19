@@ -1,10 +1,14 @@
 # xac
-A very basic autoclicker written in C with libx11.
+A very basic, fast and powerful Windows and Linux autoclicker written in C.
 
 ## Requirements
+### Linux:
 - libx11-dev
 - libxtst-dev
 - make
+
+### Windows:
+- ?
 
 ## Clone the repo
 ```
@@ -18,14 +22,14 @@ $ make
 $ ./xac
 ```
 
-## Installation
+## Installation (Linux only)
 ```
 $ sudo make install
 ```
 
 Now you can start the autoclicker just typing `xac` everywhere. 
 
-## Uninstallation
+## Uninstallation (Linux only)
 ```
 $ sudo make uninstall
 ```
