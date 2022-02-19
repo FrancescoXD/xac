@@ -15,7 +15,6 @@ void printHelp(void)
 	printf("xac -s 5\n");
 }
 
-
 void parseOpt(int argc, char *argv[], unsigned long *delay)
 {
 	int opt;

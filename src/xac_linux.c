@@ -1,7 +1,7 @@
 #include "../include/xac_linux.h"
 #include "../include/xac_common.h"
 
-void* autoclick(void *args)
+void *autoclick(void *args)
 {
 	Display *display = ((generic_options *)args)->display;
 	unsigned long delay = ((generic_options *)args)->delay;
@@ -48,7 +48,7 @@ int main_l(int argc, char *argv[])
 
 	Display *dp = XOpenDisplay(NULL);
 	unsigned int event_mask = KeyPressMask;
-	
+
 	/* Setup thread */
 	pthread_t tid;
 	pthread_attr_t attr;
@@ -76,17 +76,21 @@ int main_l(int argc, char *argv[])
 			{
 				if (XLookupKeysym(&ev.xkey, 0) == XK_F6 && ev.xkey.state & ControlMask)
 				{
-					if (go.start) {
+					if (go.start)
+					{
 						go.start = False;
-					} else {
+					}
+					else
+					{
 						go.start = True;
 						pthread_create(&tid, &attr, autoclick, (void *)&go);
 					}
 				}
-				if (XLookupKeysym(&ev.xkey, 0) == XK_q && ev.xkey.state & ControlMask) {
+				if (XLookupKeysym(&ev.xkey, 0) == XK_q && ev.xkey.state & ControlMask)
+				{
 					puts("[info] autoclicker app stopped");
 					exit(EXIT_SUCCESS);
-				} 
+				}
 				break;
 			}
 			}

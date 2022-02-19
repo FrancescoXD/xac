@@ -7,12 +7,14 @@
 
 #define HOTKEY1 1000
 
-void* w_autoclick(void *args) {
+void *w_autoclick(void *args)
+{
 	puts("start clicking");
 
 	unsigned long delay = ((win_generic_options *)args)->delay;
 
-	while (1 && ((win_generic_options *)args)->start) {
+	while (1 && ((win_generic_options *)args)->start)
+	{
 		SendInput(1, &input, sizeof(INPUT));
 		usleep(delay);
 	}
@@ -20,7 +22,8 @@ void* w_autoclick(void *args) {
 	return NULL;
 }
 
-int main_w(int argc, char *argv[]) {
+int main_w(int argc, char *argv[])
+{
 	unsigned long delay = 1000000;
 	parseOpt(argc, argv, &delay);
 
@@ -45,17 +48,23 @@ int main_w(int argc, char *argv[]) {
 	};
 
 	MSG msg = {};
-	while (GetMessage(&msg, NULL, 0, 0)) {
-		if (msg.message == HOTKEY1) {
-			switch (LOWORD(msg.wParam)) {
-				case HOTKEY1: 
-						if (wgo.start) {
-							go.start = 0;
-						} else {
-							go.start = 1;
-							pthread_create(&tid, &attr, w_autoclick, (void *)wgo);
-						}
-						break;
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		if (msg.message == HOTKEY1)
+		{
+			switch (LOWORD(msg.wParam))
+			{
+			case HOTKEY1:
+				if (wgo.start)
+				{
+					go.start = 0;
+				}
+				else
+				{
+					go.start = 1;
+					pthread_create(&tid, &attr, w_autoclick, (void *)wgo);
+				}
+				break;
 			}
 		}
 	}

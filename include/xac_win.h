@@ -9,7 +9,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-typedef struct {
+typedef struct
+{
 	unsigned long delay;
 	int start;
 	INPUT *input;
