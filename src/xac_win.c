@@ -5,17 +5,16 @@
 #define UNICODE
 #endif
 
-#define HOTKEY1 1000
-
 void *w_autoclick(void *args)
 {
 	puts("start clicking");
 
 	unsigned long delay = ((win_generic_options *)args)->delay;
+	INPUT *input = ((win_generic_options *)args)->input;
 
 	while (1 && ((win_generic_options *)args)->start)
 	{
-		SendInput(1, &input, sizeof(INPUT));
+		SendInput(1, input, sizeof(INPUT));
 		usleep(delay);
 	}
 
@@ -32,7 +31,7 @@ int main_w(int argc, char *argv[])
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-	RegisterHotKey(NULL, HOTKEY1, MOD_CONTROL, VK_F6);
+	RegisterHotKey(NULL, 1, MOD_CONTROL, VK_F6);
 
 	INPUT input;
 	input.type = INPUT_MOUSE;
@@ -47,27 +46,25 @@ int main_w(int argc, char *argv[])
 		.input = &input,
 	};
 
-	MSG msg = {};
-	while (GetMessage(&msg, NULL, 0, 0))
+	MSG msg = {0};
+	while (GetMessage(&msg, NULL, 0, 0) != 0)
 	{
-		if (msg.message == HOTKEY1)
+		if (msg.message == WM_HOTKEY)
 		{
-			switch (LOWORD(msg.wParam))
+			puts("command received");
+			if (wgo.start)
 			{
-			case HOTKEY1:
-				if (wgo.start)
-				{
-					go.start = 0;
-				}
-				else
-				{
-					go.start = 1;
-					pthread_create(&tid, &attr, w_autoclick, (void *)wgo);
-				}
-				break;
+				wgo.start = 0;
+			}
+			else
+			{
+				wgo.start = 1;
+				pthread_create(&tid, &attr, w_autoclick, (void *)&wgo);
 			}
 		}
 	}
+
+	UnregisterHotKey(NULL, 1);
 
 	return 0;
 }

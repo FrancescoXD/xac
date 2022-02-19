@@ -18,7 +18,8 @@ $ cd Xlib
 
 ## Building and running
 ```
-$ make
+$ make 			 # for linux users
+$ make windows	 # for windows users
 $ ./xac
 ```
 
