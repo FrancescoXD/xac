@@ -42,9 +42,9 @@ int main_l(int argc, char *argv[])
 	}
 	unsigned long delay = 1000000; // 1 second
 	parseOpt(argc, argv, &delay);
-	puts("[info] autoclicker app started");
-	puts("[info] start/stop the autoclicker with CTRL + F6");
-	puts("[info] quit the autoclicker with CTRL + q");
+	puts("[info] autoclicker app started.");
+	puts("[info] start/stop the autoclicker with CTRL + F6.");
+	puts("[info] quit the autoclicker with CTRL + q.");
 
 	Display *dp = XOpenDisplay(NULL);
 	unsigned int event_mask = KeyPressMask;
@@ -102,7 +102,7 @@ CLOSE:
 
 	XCloseDisplay(dp);
 
-	puts("[info] autoclicker app stopped");
+	puts("[info] autoclicker app stopped.");
 
 	return 0;
 }

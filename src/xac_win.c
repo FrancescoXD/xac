@@ -46,7 +46,7 @@ int main_w(int argc, char *argv[])
 	input.type = INPUT_MOUSE;
 	input.mi.dwFlags = (MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP);
 	input.mi.mouseData = 0;
-	input.mi.dwExtraInfo = NULL;
+	input.mi.dwExtraInfo = (ULONG_PTR)NULL;
 	input.mi.time = 0;
 
 	win_generic_options wgo = {
@@ -73,6 +73,8 @@ int main_w(int argc, char *argv[])
 	}
 
 	UnregisterHotKey(NULL, 1);
+
+	puts("[info] autoclicker app stopped.");
 
 	return 0;
 }
