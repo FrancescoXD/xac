@@ -7,9 +7,6 @@ A very basic, fast and powerful Windows and Linux autoclicker written in C.
 - libxtst-dev
 - make
 
-### Windows:
-- ?
-
 ## Clone the repo
 ```
 $ git clone https://github.com/FrancescoXD/xac.git
@@ -18,7 +15,7 @@ $ cd Xlib
 
 ## Building and running
 ```
-$ make 			 # for linux users
+$ make linux	 # for linux users
 $ make windows	 # for windows users
 $ ./xac
 ```

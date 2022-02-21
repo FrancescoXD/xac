@@ -3,15 +3,16 @@ CFLAGS=-Wall -Werror -Wextra -pedantic
 EXEC_NAME=xac
 FILES=src/xac.c src/xac_linux.c src/xac_common.c src/xac_win.c
 LIBS=-lX11 -lXtst -lpthread
-OBJ_FILES=xac_linux.o xac_common.o xac_win.o
+L_OBJ_FILES=xac_linux.o xac_common.o
+W_OBJ_FILES=xac_win.o xac_common.o
 
-.PHONY: all install uninstall clean
+.PHONY: linux windows clean
 
-all: xac_linux.o xac_common.o
-	$(CC) $(CFLAGS) -o $(EXEC_NAME) src/xac.c $(OBJ_FILES) $(LIBS)
+linux: xac_linux.o xac_common.o
+	$(CC) $(CFLAGS) -o $(EXEC_NAME) src/xac.c $(L_OBJ_FILES) $(LIBS)
 
 windows: xac_win.o xac_common.o
-	$(CC) $(CFLAGS) -o $(EXEC_NAME) src/xac.c $(OBJ_FILES) -lpthread
+	$(CC) $(CFLAGS) -o $(EXEC_NAME) src/xac.c $(W_OBJ_FILES) -lpthread
 
 xac_linux.o:
 	$(CC) $(CFLAGS) -c src/xac_linux.c -o xac_linux.o
@@ -29,5 +30,5 @@ uninstall:
 	rm /usr/bin/$(EXEC_NAME)
 
 clean:
-	rm $(EXEC_NAME) $(OBJ_FILES)
+	rm $(EXEC_NAME) $(L_OBJ_FILES) $(W_OBJ_FILES)
 
