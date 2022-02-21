@@ -5,6 +5,9 @@
 #define UNICODE
 #endif
 
+#define CTRL_F6 1
+#define CTRL_Q  2
+
 void *w_autoclick(void *args)
 {
 	unsigned long delay = ((win_generic_options *)args)->delay;
@@ -27,6 +30,8 @@ void *w_autoclick(void *args)
 		usleep(delay);
 	}
 
+	puts("[info] autoclicker has stopped.");
+
 	return NULL;
 }
 
@@ -34,13 +39,17 @@ int main_w(int argc, char *argv[])
 {
 	unsigned long delay = 1000000;
 	parseOpt(argc, argv, &delay);
+	puts("[info] autoclicker app started.");
+	puts("[info] start/stop the autoclicker with CTRL + F6.");
+	puts("[info] quit the autoclicker with CTRL + q.");
 
 	pthread_t tid;
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-	RegisterHotKey(NULL, 1, MOD_CONTROL, VK_F6);
+	RegisterHotKey(NULL, CTRL_F6, MOD_CONTROL, VK_F6);
+	RegisterHotKey(NULL, CTRL_Q, MOD_CONTROL, 0x51);
 
 	INPUT input;
 	input.type = INPUT_MOUSE;
@@ -60,19 +69,28 @@ int main_w(int argc, char *argv[])
 	{
 		if (msg.message == WM_HOTKEY)
 		{
-			if (wgo.start)
-			{
-				wgo.start = 0;
-			}
-			else
-			{
-				wgo.start = 1;
-				pthread_create(&tid, &attr, w_autoclick, (void *)&wgo);
+			switch ((int)msg.wParam) {
+				case CTRL_F6:
+					if (wgo.start)
+					{
+						wgo.start = 0;
+					}
+					else
+					{
+						wgo.start = 1;
+						pthread_create(&tid, &attr, w_autoclick, (void *)&wgo);
+					}
+					break;
+				case CTRL_Q:
+					goto CLOSE;
+					break;
 			}
 		}
 	}
 
-	UnregisterHotKey(NULL, 1);
+CLOSE:
+	UnregisterHotKey(NULL, CTRL_F6);
+	UnregisterHotKey(NULL, CTRL_Q);
 
 	puts("[info] autoclicker app stopped.");
 

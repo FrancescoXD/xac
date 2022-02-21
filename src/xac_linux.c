@@ -35,11 +35,6 @@ int main_l(int argc, char *argv[])
 {
 	XInitThreads();
 
-	if (optind >= argc)
-	{
-		fprintf(stderr, "[error] no argument passed!\n%s -h to see the help page.\n", argv[0]);
-		exit(EXIT_FAILURE);
-	}
 	unsigned long delay = 1000000; // 1 second
 	parseOpt(argc, argv, &delay);
 	puts("[info] autoclicker app started.");
