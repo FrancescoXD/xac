@@ -7,10 +7,19 @@
 
 void *w_autoclick(void *args)
 {
-	puts("start clicking");
-
 	unsigned long delay = ((win_generic_options *)args)->delay;
 	INPUT *input = ((win_generic_options *)args)->input;
+	
+	for (int i = 3; i >= 1; --i)
+	{
+		printf("\r[info] start clicking in... %d", i);
+		fflush(stdout);
+		sleep(1);
+		if (i == 1)
+		{
+			printf("\r[info] autoclicker has started.\n");
+		}
+	}
 
 	while (1 && ((win_generic_options *)args)->start)
 	{
@@ -51,7 +60,6 @@ int main_w(int argc, char *argv[])
 	{
 		if (msg.message == WM_HOTKEY)
 		{
-			puts("command received");
 			if (wgo.start)
 			{
 				wgo.start = 0;

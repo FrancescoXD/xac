@@ -1,5 +1,6 @@
 #include "../include/xac_linux.h"
 #include "../include/xac_common.h"
+#include <X11/Xlib.h>
 
 void *autoclick(void *args)
 {
@@ -88,8 +89,7 @@ int main_l(int argc, char *argv[])
 				}
 				if (XLookupKeysym(&ev.xkey, 0) == XK_q && ev.xkey.state & ControlMask)
 				{
-					puts("[info] autoclicker app stopped");
-					exit(EXIT_SUCCESS);
+					goto CLOSE;	
 				}
 				break;
 			}
@@ -97,7 +97,13 @@ int main_l(int argc, char *argv[])
 		}
 	}
 
+CLOSE:
+	XUngrabKey(dp, XKeysymToKeycode(dp, XK_F6), ControlMask, DefaultRootWindow(dp));
+	XUngrabKey(dp, XKeysymToKeycode(dp, XK_Q), ControlMask, DefaultRootWindow(dp));	
+
 	XCloseDisplay(dp);
+
+	puts("[info] autoclicker app stopped");
 
 	return 0;
 }
